@@ -87,6 +87,55 @@
         <p>© 2026 FF Tournament SM</p>
     </footer>
 
+<section class="container" id="register">
+  <div class="card">
+    <h2>Player Registration</h2>
+
+    <form id="registerForm">
+      <input type="text" id="playerName"
+        placeholder="Enter Player Name" required>
+
+      <input type="text" id="gameUID"
+        placeholder="Enter Free Fire UID" required>
+
+      <select id="gameMode" required>
+        <option value="">Select Match</option>
+        <option>Solo Match</option>
+        <option>Squad Match</option>
+      </select>
+
+      <button type="submit">Register Now</button>
+    </form>
+
+    <p id="registerMessage"></p>
+  </div>
+</section>
+
+<script>
+document.getElementById("registerForm")
+.addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const player = {
+    name: document.getElementById("playerName").value,
+    uid: document.getElementById("gameUID").value,
+    mode: document.getElementById("gameMode").value
+  };
+
+  let players = JSON.parse(
+    localStorage.getItem("players") || "[]"
+  );
+
+  players.push(player);
+  localStorage.setItem("players", JSON.stringify(players));
+
+  document.getElementById("registerMessage").textContent =
+    "Registration Successful!";
+
+  this.reset();
+});
+</script>
+
 </body>
 </html>
 
