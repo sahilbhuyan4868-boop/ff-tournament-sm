@@ -257,3 +257,111 @@ updatePage();
 </script>
 </body>
 </html>
+<div class="card">
+  <h2>💳 Add Coins</h2>
+  <img id="paymentQR" src="" 
+       style="width:220px;max-width:100%;display:block;margin:auto">
+
+  <p>Scan QR Code to Pay</p>
+  <button onclick="loadQR()">Refresh QR</button>
+</div>
+
+<div class="card">
+  <h2>🔐 Admin – Change QR</h2>
+
+  <input type="password" id="adminToken"
+         placeholder="Admin Password">
+
+  <input type="file" id="qrFile" accept="image/png,image/jpeg,image/webp">
+
+  <button onclick="uploadQR()">Upload New QR</button>
+
+  <p id="qrMessage"></p>
+</div>
+
+<script>
+const API_URL = "https://YOUR-BACKEND-URL.com";
+
+async function loadQR() {
+  const response = await fetch(API_URL + "/api/payment-qr");
+  const data = await response.json();
+
+  if (data.url) {
+    document.getElementById("paymentQR").src =
+      API_URL + data.url + "?v=" + Date.now();
+  }
+}
+
+async function uploadQR() {
+  const file = document.getElementById("qrFile").files[0];
+  const token = document.getElementById("adminToken").value;
+
+  if (!file) {
+    alert("Please select your QR image");
+    return;
+  }
+
+  const form = new FormData();
+  form.append("qr", file);
+
+  const response = await fetch(API_URL + "/api/admin/payment-qr", {
+    method: "POST",
+    headers: { "Authorization": "Bearer " + token },
+    body: form
+  });
+
+  const result = await response.json();
+  document.getElementById("qrMessage").textContent =
+    result.message || result.error;
+
+  if (response.ok) loadQR();
+}
+
+loadQR();
+</script>
+const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
+
+const uploadDir = path.join(__dirname, "uploads");
+fs.mkdirSync(uploadDir, { recursive: true });
+
+app.use("/uploads", express.static(uploadDir));
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: uploadDir,
+    filename: (req, file, cb) => {
+      cb(null, "payment-qr" + path.extname(file.originalname).toLowerCase());
+    }
+  }),
+  limits: { fileSize: 2 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    cb(null, ["image/png", "image/jpeg", "image/webp"].includes(file.mimetype));
+  }
+});
+
+let activeQR = "/uploads/payment-qr.png";
+
+app.get("/api/payment-qr", (req, res) => {
+  res.json({ url: activeQR });
+});
+
+app.post("/api/admin/payment-qr",
+  requireAdmin,
+  upload.single("qr"),
+  (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({ error: "QR image required" });
+    }
+
+    activeQR = "/uploads/" + req.file.filename;
+
+    res.json({
+      message: "QR Code updated successfully!",
+      url: activeQR
+    });
+  }
+
+
+);
