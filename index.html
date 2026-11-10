@@ -4,227 +4,256 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FF Tournament SM</title>
+<title>FF TOURNAMENT SM</title>
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;background:#090909;color:white;
- font-family:Arial,sans-serif;text-align:center
-}
-header{
- background:#181818;padding:22px;
- border-bottom:3px solid #ff9d00
-}
-h1,h2{color:#ffad00}
-.container{padding:15px}
-.card{
- background:#202020;border:1px solid #a66b00;
- border-radius:14px;padding:18px;
- margin:15px auto;max-width:450px
-}
-input,select{
- width:100%;padding:13px;margin:7px 0;
- border:0;border-radius:7px;font-size:16px
-}
-button{
- background:#ff9d00;color:black;
- padding:12px 18px;border:0;
- border-radius:7px;font-weight:bold;
- margin:5px;cursor:pointer
-}
-.small{color:#bbb;font-size:13px}
-.hidden{display:none}
+body{margin:0;background:#090909;color:white;font-family:Arial,sans-serif}
+header{background:#151515;padding:18px;text-align:center;border-bottom:2px solid #ff8c00}
+header h1{margin:0;color:#ff9800;font-size:27px}
+header p{color:#bbb;margin:7px 0 0}
+.container{max-width:850px;margin:auto;padding:18px}
+.card{background:#171717;border:1px solid #393939;border-radius:13px;padding:18px;margin:15px 0}
+h2{color:#ff9800;margin-top:0}
+button{background:#ff8c00;color:#111;border:0;padding:12px 18px;border-radius:8px;font-weight:bold;cursor:pointer;margin:5px}
+button.secondary{background:#333;color:white;border:1px solid #666}
+input,select{width:100%;padding:13px;margin:8px 0;background:#101010;color:white;border:1px solid #555;border-radius:7px}
+label{display:block;margin-top:10px;color:#ddd}
+.hidden{display:none!important}
+.hero{text-align:center;padding:55px 15px 65px;background:linear-gradient(145deg,#281300,#101010 65%)}
+.hero h2{font-size:34px;color:#ff9c19}
+.hero p{color:#ddd;line-height:1.6}
+.coins{font-size:25px;color:#ffd34e;font-weight:bold}
+.notice{background:#29200e;padding:12px;border-left:4px solid #ff9800;color:#ffe0a3;border-radius:5px}
+.item{padding:12px;background:#222;border-radius:8px;margin:8px 0;overflow-wrap:anywhere}
+footer{text-align:center;color:#888;padding:25px}
 </style>
 </head>
 <body>
 
 <header>
-<h1>🔥 FF TOURNAMENT SM 🔥</h1>
-<p>PLAY • COMPETE • WIN</p>
+  <h1>🔥 FF TOURNAMENT SM</h1>
+  <p>Free Fire Tournament Platform</p>
 </header>
 
+<!-- HOME PAGE -->
+<section id="homePage">
+  <div class="hero">
+    <h2>WELCOME TO FF TOURNAMENT SM</h2>
+    <p>Join Free Fire tournaments, register your team<br>and enjoy the demo tournament experience.</p>
+    <button onclick="openTournament()">VISIT / JOINING</button>
+  </div>
+  <div class="container">
+    <div class="card">
+      <h2>🏆 About Tournament</h2>
+      <p>Choose Solo, Duo or Squad and register for a free demo match.</p>
+    </div>
+    <div class="card">
+      <h2>🎮 Game Modes</h2>
+      <p>SOLO • DUO • SQUAD</p>
+    </div>
+  </div>
+</section>
+
+<!-- TOURNAMENT PAGE -->
+<section id="tournamentPage" class="hidden">
 <div class="container">
 
-<div class="card">
-<h2>🪙 Coins Wallet</h2>
-<h1 id="coins">100</h1>
-<p class="small">Demo Coins Only</p>
-<button onclick="addCoins()">Add 50 Demo Coins</button>
-</div>
+  <button class="secondary" onclick="goHome()">← HOME</button>
 
-<div class="card">
-<h2>Player Registration</h2>
-<input id="name" placeholder="Player Name">
-<input id="uid" placeholder="Free Fire UID">
-<input id="whatsapp" placeholder="WhatsApp Number">
-<button onclick="register()">Register Now</button>
-<p id="regMessage"></p>
-</div>
+  <div class="card">
+    <h2>💰 Demo Coin Wallet</h2>
+    <div class="coins"><span id="coinBalance">50</span> Demo Coins</div>
+    <button onclick="addDemoCoins()">+50 Demo Coins</button>
+    <p class="notice">Demo coins are for testing only. They cannot be purchased, withdrawn or exchanged for money or prizes.</p>
+  </div>
 
-<div class="card">
-<h2>🎮 Tournament Entry</h2>
-<select id="mode">
-<option value="Solo">Solo Match - 10 Coins</option>
-<option value="Duo">Duo Match - 20 Coins</option>
-<option value="Squad">Squad Match - 40 Coins</option>
-</select>
-<button onclick="joinMatch()">Join Tournament</button>
-<p id="entryMessage"></p>
-</div>
+  <div class="card">
+    <h2>📝 Player Registration</h2>
+    <label>Free Fire Player Name</label>
+    <input id="playerName" placeholder="Enter your Free Fire name">
 
-<div class="card">
-<h2>🔐 Room Details</h2>
-<p>Room ID: <b id="room">Not Available</b></p>
-<button onclick="copyText('room')">Copy Room ID</button>
-<p>Password: <b id="password">Not Available</b></p>
-<button onclick="copyText('password')">Copy Password</button>
-<p class="small">Room details are demo information.</p>
-</div>
+    <label>Free Fire UID</label>
+    <input id="playerUID" placeholder="Enter your UID">
 
-<div class="card">
-<h2>🏆 Winners</h2>
-<div id="winners">Winner details coming soon!</div>
-</div>
+    <label>WhatsApp Number</label>
+    <input id="playerWhatsApp" type="tel" placeholder="Enter contact number">
 
-<div class="card">
-<h2>🔧 Admin Demo</h2>
-<p class="small">Local demo controls. Not secure for a live website.</p>
-<input id="adminRoom" placeholder="Enter Room ID">
-<input id="adminPass" placeholder="Enter Room Password">
-<input id="winnerName" placeholder="Winner Name">
-<input id="winnerUID" placeholder="Winner UID">
-<button onclick="updateRoom()">Update Room</button>
-<button onclick="updateWinner()">Add Winner</button>
-</div>
+    <label>Select Match</label>
+    <select id="matchType">
+      <option value="Solo">Solo - 10 Demo Coins</option>
+      <option value="Duo">Duo - 20 Demo Coins</option>
+      <option value="Squad">Squad - 40 Demo Coins</option>
+    </select>
 
+    <button onclick="registerPlayer()">REGISTER FOR FREE DEMO</button>
+    <p id="registerMessage"></p>
+  </div>
+
+  <div class="card">
+    <h2>📅 Match Schedule</h2>
+    <div id="scheduleDisplay" class="item">Demo match time: To be announced</div>
+  </div>
+
+  <div class="card">
+    <h2>🔐 Room Details</h2>
+    <p id="roomMessage">Register for a demo match to view the demo room details.</p>
+    <div id="roomDetails" class="hidden">
+      <div class="item">Room ID: <strong id="roomID">DEMO-12345</strong></div>
+      <button onclick="copyText('roomID')">COPY ROOM ID</button>
+      <div class="item">Password: <strong id="roomPassword">DEMO-PASS</strong></div>
+      <button onclick="copyText('roomPassword')">COPY PASSWORD</button>
+    </div>
+    <p class="notice">These are sample details only, not a real Free Fire room.</p>
+  </div>
+
+  <div class="card">
+    <h2>🏆 Winner List</h2>
+    <div id="winnerList">No winners announced yet.</div>
+  </div>
+
+  <div class="card">
+    <h2>⚙️ Admin Demo Preview</h2>
+    <p class="notice">This is a local testing panel, not a secure private admin panel. Changes are saved only in this browser.</p>
+    <label>Demo Match Time</label>
+    <input id="newTime" placeholder="Example: 7:00 PM">
+    <label>Sample Room ID</label>
+    <input id="newRoom" placeholder="Enter sample room ID">
+    <label>Sample Room Password</label>
+    <input id="newPass" placeholder="Enter sample password">
+    <button onclick="saveSettings()">SAVE DEMO SETTINGS</button>
+    <hr style="border-color:#444;margin:20px 0">
+    <label>Add Winner Name</label>
+    <input id="winnerInput" placeholder="Enter winner name">
+    <button onclick="addWinner()">ADD WINNER</button>
+  </div>
+
+  <button class="secondary" onclick="goHome()">BACK TO HOME</button>
 </div>
+</section>
+
+<footer>© 2026 FF TOURNAMENT SM | Free Demo Version</footer>
 
 <script>
-let coins = Number(localStorage.getItem("demoCoins") || 100);
-let registered = localStorage.getItem("demoRegistered") === "yes";
-let entered = localStorage.getItem("demoEntered") === "yes";
+const $ = id => document.getElementById(id);
 
-function showCoins(){
- document.getElementById("coins").innerText=coins;
+function getData(key, fallback){
+  try{
+    const value = localStorage.getItem(key);
+    return value === null ? fallback : JSON.parse(value);
+  }catch(e){ return fallback; }
 }
-showCoins();
-
-function addCoins(){
- coins += 50;
- localStorage.setItem("demoCoins",coins);
- showCoins();
+function saveData(key,value){
+  localStorage.setItem(key,JSON.stringify(value));
 }
 
-function register(){
- let name=document.getElementById("name").value.trim();
- let uid=document.getElementById("uid").value.trim();
- let whatsapp=document.getElementById("whatsapp").value.trim();
+let coins = getData("ffsm_coins",50);
+let entered = getData("ffsm_entered",false);
+let schedule = getData("ffsm_schedule","Demo match time: To be announced");
+let room = getData("ffsm_room","DEMO-12345");
+let password = getData("ffsm_password","DEMO-PASS");
+let winners = getData("ffsm_winners",[]);
 
- if(!name || !uid || !whatsapp){
-  alert("Please fill all details");
-  return;
- }
+function updatePage(){
+  $("coinBalance").textContent = coins;
+  $("scheduleDisplay").textContent = schedule;
+  $("roomID").textContent = room;
+  $("roomPassword").textContent = password;
+  $("roomDetails").classList.toggle("hidden",!entered);
+  $("roomMessage").textContent = entered
+    ? "Your demo registration is active."
+    : "Register for a demo match to view the demo room details.";
 
- localStorage.setItem("demoPlayer",
- JSON.stringify({name,uid,whatsapp}));
- localStorage.setItem("demoRegistered","yes");
- registered=true;
-
- document.getElementById("regMessage").innerText=
- "Registration Successful!";
+  $("winnerList").replaceChildren();
+  if(winners.length === 0){
+    $("winnerList").textContent = "No winners announced yet.";
+  }else{
+    winners.forEach(name=>{
+      const div=document.createElement("div");
+      div.className="item";
+      div.textContent="🏅 "+name;
+      $("winnerList").appendChild(div);
+    });
+  }
 }
 
-function joinMatch(){
- if(!registered){
-  alert("Please register first!");
-  return;
- }
-
- let mode=document.getElementById("mode").value;
- let prices={Solo:10,Duo:20,Squad:40};
- let cost=prices[mode];
-
- if(coins<cost){
-  alert("Not enough Demo Coins!");
-  return;
- }
-
- coins-=cost;
- localStorage.setItem("demoCoins",coins);
- localStorage.setItem("demoEntered","yes");
- localStorage.setItem("demoMode",mode);
- entered=true;
- showCoins();
-
- document.getElementById("entryMessage").innerText=
- mode+" Entry Confirmed!";
+function openTournament(){
+  $("homePage").classList.add("hidden");
+  $("tournamentPage").classList.remove("hidden");
+  updatePage();
 }
-
-function updateRoom(){
- let room=document.getElementById("adminRoom").value.trim();
- let pass=document.getElementById("adminPass").value.trim();
-
- if(!room || !pass){
-  alert("Enter Room ID and Password");
-  return;
- }
-
- localStorage.setItem("demoRoom",room);
- localStorage.setItem("demoPassword",pass);
- alert("Demo Room Updated");
+function goHome(){
+  $("tournamentPage").classList.add("hidden");
+  $("homePage").classList.remove("hidden");
 }
-
+function addDemoCoins(){
+  coins += 50;
+  saveData("ffsm_coins",coins);
+  updatePage();
+}
+function registerPlayer(){
+  const name=$("playerName").value.trim();
+  const uid=$("playerUID").value.trim();
+  const whatsapp=$("playerWhatsApp").value.trim();
+  const type=$("matchType").value;
+  const fees={Solo:10,Duo:20,Squad:40};
+  if(!name || !uid || !whatsapp){
+    $("registerMessage").textContent="Please fill in all registration fields.";
+    return;
+  }
+  if(!/^[0-9]{5,20}$/.test(uid)){
+    $("registerMessage").textContent="Please enter a valid numeric UID.";
+    return;
+  }
+  if(coins < fees[type]){
+    $("registerMessage").textContent="Not enough demo coins. Add demo coins to test.";
+    return;
+  }
+  coins -= fees[type];
+  entered=true;
+  saveData("ffsm_coins",coins);
+  saveData("ffsm_entered",entered);
+  saveData("ffsm_player",{name,uid,whatsapp,type});
+  $("registerMessage").textContent="Demo registration successful! Match: "+type;
+  updatePage();
+}
+function saveSettings(){
+  const time=$("newTime").value.trim();
+  const newRoom=$("newRoom").value.trim();
+  const newPassword=$("newPass").value.trim();
+  if(time){
+    schedule="Demo match time: "+time;
+    saveData("ffsm_schedule",schedule);
+  }
+  if(newRoom){
+    room=newRoom;
+    saveData("ffsm_room",room);
+  }
+  if(newPassword){
+    password=newPassword;
+    saveData("ffsm_password",password);
+  }
+  updatePage();
+  alert("Demo settings saved in this browser.");
+}
+function addWinner(){
+  const name=$("winnerInput").value.trim();
+  if(!name){alert("Enter a winner name first.");return;}
+  winners.push(name);
+  saveData("ffsm_winners",winners);
+  $("winnerInput").value="";
+  updatePage();
+}
 function copyText(id){
- if(!entered){
-  alert("Join a tournament first!");
-  return;
- }
-
- let value=document.getElementById(id).innerText;
- if(value==="Not Available"){
-  alert("Room details not available yet");
-  return;
- }
-
- navigator.clipboard.writeText(value)
- .then(()=>alert("Copied!"))
- .catch(()=>alert("Copy not supported"));
+  const value=$(id).textContent;
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(value)
+      .then(()=>alert("Copied!"))
+      .catch(()=>alert("Copy not available on this browser."));
+  }else{
+    alert("Please copy this text manually: "+value);
+  }
 }
-
-function updateWinner(){
- let name=document.getElementById("winnerName").value.trim();
- let uid=document.getElementById("winnerUID").value.trim();
-
- if(!name || !uid){
-  alert("Enter winner name and UID");
-  return;
- }
-
- let list=JSON.parse(localStorage.getItem("demoWinners")||"[]");
- list.push({name,uid});
- localStorage.setItem("demoWinners",JSON.stringify(list));
- showWinners();
-}
-
-function showWinners(){
- let list=JSON.parse(localStorage.getItem("demoWinners")||"[]");
- document.getElementById("winners").innerHTML=
- list.length ? list.map(w=>
- "<p>🏆 "+w.name+" - UID: "+w.uid+"</p>"
- ).join("") : "Winner details coming soon!";
-}
-
-function loadRoom(){
- document.getElementById("room").innerText=
- localStorage.getItem("demoRoom")||"Not Available";
- document.getElementById("password").innerText=
- localStorage.getItem("demoPassword")||"Not Available";
-}
-
-showWinners();
-loadRoom();
+updatePage();
 </script>
 </body>
 </html>
-
-
